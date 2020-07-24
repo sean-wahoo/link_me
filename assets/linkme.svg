@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 619.49 481.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 8px;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <title>linkme</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <path class="cls-1" d="M148.5,406V76a72,72,0,0,0-144,0V405.5a72,72,0,0,0,144,0"/>
+    <path class="cls-2" d="M24.73,126.81,258.08,360.16A72,72,0,1,0,359.9,258.33L126.56,25l.35.35A72,72,0,1,0,25.09,127.17"/>
+    <path class="cls-1" d="M259.23,258.69,492.58,25.34A72,72,0,1,1,594.4,127.17L361.06,360.51l.35-.35A72,72,0,0,1,259.59,258.33"/>
+    <path class="cls-2" d="M615,406V76a72,72,0,0,0-144,0V405.5a72,72,0,0,0,144,0"/>
+  </g>
+</svg>
