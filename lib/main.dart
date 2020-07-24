@@ -34,6 +34,13 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
+            Center(
+              child: Image.asset(
+                'assets/linkme.png',
+                height: 200,
+                width: 200,
+              ),
+            ),
           ],
         ),
       ),
