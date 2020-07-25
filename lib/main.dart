@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         routes: {
           '/': (context) => LoginScreen(),
+          '/home': (context) => HomeScreen(),
         },
       ),
     );

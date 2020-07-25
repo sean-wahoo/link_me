@@ -11,10 +11,23 @@ class AuthService {
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
 
-  // Firebase user a realtime stream
   Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
 
   // sign in with google
+
+  Future<void> updateUserData(FirebaseUser user) {
+    DocumentReference reportRef = _db.collection('reports').document(user.uid);
+
+    return reportRef.setData({
+      'uid': user.uid,
+      'lastActivity': DateTime.now(),
+    }, merge: true);
+  }
+
+  Future<void> signOut() {
+    return _auth.signOut();
+  }
+
   Future<FirebaseUser> googleSignIn() async {
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
@@ -27,24 +40,11 @@ class AuthService {
       AuthResult result = await _auth.signInWithCredential(credential);
       FirebaseUser user = result.user;
 
-      updateUserdata(user);
+      updateUserData(user);
+      return user;
     } catch (error) {
       print(error);
       return null;
-    }
-
-    Future<void> updateUserData(FirebaseUser user) {
-      DocumentReference reportRef =
-          _db.collection('reports').document(user.uid);
-
-      return reportRef.setData({
-        'uid': user.uid,
-        'lastActivity': DateTime.now(),
-      }, merge: true);
-    }
-
-    Future<void> signOut() {
-      return _auth.signOut();
     }
   }
 
