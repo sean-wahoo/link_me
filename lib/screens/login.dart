@@ -50,8 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
             LogoImage(
               height: 150,
               width: 150,
@@ -72,6 +72,19 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.white,
               loginMethod: auth.googleSignIn,
             ),
+            FlatButton.icon(
+              onPressed: () => {Navigator.pushNamed(context, '/logInEmail')},
+              label: Text(
+                "Sign in with Email",
+                style: TextStyle(color: Colors.white),
+              ),
+              padding: EdgeInsets.all(25),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              icon: Icon(FontAwesomeIcons.envelope, color: Colors.white),
+              color: Colors.black54,
+            )
           ],
         ),
       ),
@@ -90,12 +103,13 @@ class GSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 100, bottom: 50),
       child: FlatButton.icon(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
         label: Text(text),
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(40),
         icon: Icon(icon, color: HexColor.fromHex('#33DF6F')),
         color: color,
         onPressed: () async {

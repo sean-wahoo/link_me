@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => LoginScreen(),
           '/home': (context) => HomeScreen(),
+          '/logInEmail': (context) => LogInEmailScreen(),
         },
       ),
     );
