@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "103168208743",
+    "firebase_url": "https://link-me-5bc35.firebaseio.com",
+    "project_id": "link-me-5bc35",
+    "storage_bucket": "link-me-5bc35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103168208743:android:e8b6e739d18afb3f0bc9c2",
+        "android_client_info": {
+          "package_name": "dev.link_me.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103168208743-3h4k8vdijqj5qqjtf202h3t7qrap9d7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw0IvcBhYqrOzThQUgf9IzwPQ1moq4egM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103168208743-3h4k8vdijqj5qqjtf202h3t7qrap9d7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
