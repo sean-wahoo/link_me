@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../hex/hexColor.dart';
 import '../services/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -52,18 +53,23 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             LogoImage(
-              height: 100,
-              width: 100,
+              height: 150,
+              width: 150,
             ),
             Text(
               "Login or Register below!",
-              style: Theme.of(context).textTheme.headline2,
+              style: GoogleFonts.nunito(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
               textAlign: TextAlign.center,
             ),
             GSignInButton(
-              text: "LOGIN WITH GOOGLE",
+              text: "Sign in with Google",
               icon: FontAwesomeIcons.google,
-              color: Colors.white10,
+              color: Colors.white,
               loginMethod: auth.googleSignIn,
             ),
           ],
@@ -85,9 +91,12 @@ class GSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton.icon(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
         label: Text(text),
         padding: EdgeInsets.all(30),
-        icon: Icon(icon, color: Colors.white),
+        icon: Icon(icon, color: HexColor.fromHex('#33DF6F')),
         color: color,
         onPressed: () async {
           var user = await loginMethod();

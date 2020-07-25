@@ -18,8 +18,30 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          children: [Text('hello')],
+          children: [
+            Text('hello'),
+            LogOutButton(),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class LogOutButton extends StatelessWidget {
+  final AuthService auth = AuthService();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      height: 100,
+      child: FlatButton(
+        child: Text('log out'),
+        color: Colors.red,
+        onPressed: () async {
+          await auth.signOut();
+          Navigator.pushReplacementNamed(context, '/');
+        },
       ),
     );
   }
