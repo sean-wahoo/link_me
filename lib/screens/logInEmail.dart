@@ -167,7 +167,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                       ),
                     ),
                     FlatButton(
-                      onPressed: null,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signUpEmail');
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: HexColor.fromHex("#FBFBFB"),
