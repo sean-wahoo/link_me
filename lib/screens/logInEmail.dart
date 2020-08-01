@@ -73,6 +73,7 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
           padding: EdgeInsets.all(30),
           decoration: BoxDecoration(
@@ -93,24 +94,41 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Material(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                elevation: _emailElevation(),
-                shadowColor: _emailShadowColor(),
-                child: TextFormField(
-                  focusNode: _emailFocusNode,
-                  decoration: new InputDecoration(
-                    hintText: "Email",
-                    fillColor: HexColor.fromHex("FBFBFB"),
-                    filled: true,
-                    border: inputBorder,
-                    focusedBorder: inputBorder,
+              Padding(
+                padding: EdgeInsets.only(bottom: 50),
+                child: Text(
+                  "Login",
+                  style: GoogleFonts.nunito(
+                    fontWeight: FontWeight.w700,
+                    color: HexColor.fromHex("FBFBFB"),
+                    fontSize: 52,
                   ),
-                  onChanged: (val) {},
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 25),
+                child: Material(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  elevation: _emailElevation(),
+                  shadowColor: _emailShadowColor(),
+                  child: TextFormField(
+                    focusNode: _emailFocusNode,
+                    decoration: new InputDecoration(
+                      hintText: "Email",
+                      hintStyle: GoogleFonts.nunito(
+                        color: HexColor.fromHex('#9D9D9D'),
+                      ),
+                      fillColor: HexColor.fromHex("FBFBFB"),
+                      filled: true,
+                      border: inputBorder,
+                      focusedBorder: inputBorder,
+                    ),
+                    onChanged: (val) {},
+                  ),
                 ),
               ),
               Material(
@@ -123,6 +141,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                   focusNode: _passFocusNode,
                   decoration: new InputDecoration(
                     hintText: "Password",
+                    hintStyle: GoogleFonts.nunito(
+                      color: HexColor.fromHex('#9D9D9D'),
+                    ),
                     fillColor: HexColor.fromHex("FBFBFB"),
                     filled: true,
                     border: inputBorder,
@@ -130,7 +151,44 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                   ),
                   onChanged: (val) {},
                 ),
-              )
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Don't have an account?",
+                      style: GoogleFonts.nunito(
+                        fontWeight: FontWeight.w300,
+                        color: HexColor.fromHex("#FBFBFB"),
+                        fontSize: 14,
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: HexColor.fromHex("#FBFBFB"),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Register",
+                            style: GoogleFonts.nunito(
+                              color: HexColor.fromHex("#14B54C"),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

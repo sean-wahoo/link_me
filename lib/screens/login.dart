@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final Color midGreen = HexColor.fromHex('#33DF6F');
     final Color bottomGreen = HexColor.fromHex('#47B06B');
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         padding: EdgeInsets.all(30),
         decoration: BoxDecoration(
