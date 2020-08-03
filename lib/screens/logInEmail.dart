@@ -17,6 +17,7 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
 
   String email;
   String password;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -109,76 +110,83 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 25),
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  elevation: _emailElevation(),
-                  shadowColor: _emailShadowColor(),
-                  child: TextFormField(
-                    focusNode: _emailFocusNode,
-                    decoration: new InputDecoration(
-                      hintText: "Email",
-                      hintStyle: GoogleFonts.nunito(
-                        color: HexColor.fromHex('#9D9D9D'),
-                      ),
-                      fillColor: HexColor.fromHex("FBFBFB"),
-                      filled: true,
-                      border: inputBorder,
-                      focusedBorder: inputBorder,
-                    ),
-                    onChanged: (val) {
-                      setState(() => email = val);
-                    },
-                  ),
-                ),
-              ),
-              Material(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                elevation: _passElevation(),
-                shadowColor: _passShadowColor(),
-                child: TextFormField(
-                  focusNode: _passFocusNode,
-                  decoration: new InputDecoration(
-                    hintText: "Password",
-                    hintStyle: GoogleFonts.nunito(
-                      color: HexColor.fromHex('#9D9D9D'),
-                    ),
-                    fillColor: HexColor.fromHex("FBFBFB"),
-                    filled: true,
-                    border: inputBorder,
-                    focusedBorder: inputBorder,
-                  ),
-                  onChanged: (val) {
-                    setState(() => password = val);
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25),
-                child: FlatButton(
-                  onPressed: () => {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: HexColor.fromHex('#FBFBFB'),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        "Login",
-                        style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.w500,
-                          color: HexColor.fromHex("#14B54C"),
-                          fontSize: 24,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 25),
+                      child: Material(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        elevation: _emailElevation(),
+                        shadowColor: _emailShadowColor(),
+                        child: TextFormField(
+                          focusNode: _emailFocusNode,
+                          decoration: new InputDecoration(
+                            hintText: "Email",
+                            hintStyle: GoogleFonts.nunito(
+                              color: HexColor.fromHex('#9D9D9D'),
+                            ),
+                            fillColor: HexColor.fromHex("FBFBFB"),
+                            filled: true,
+                            border: inputBorder,
+                            focusedBorder: inputBorder,
+                          ),
+                          onChanged: (val) {
+                            setState(() => email = val);
+                          },
                         ),
                       ),
                     ),
-                  ),
+                    Material(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      elevation: _passElevation(),
+                      shadowColor: _passShadowColor(),
+                      child: TextFormField(
+                        focusNode: _passFocusNode,
+                        decoration: new InputDecoration(
+                          hintText: "Password",
+                          hintStyle: GoogleFonts.nunito(
+                            color: HexColor.fromHex('#9D9D9D'),
+                          ),
+                          fillColor: HexColor.fromHex("FBFBFB"),
+                          filled: true,
+                          border: inputBorder,
+                          focusedBorder: inputBorder,
+                        ),
+                        onChanged: (val) {
+                          setState(() => password = val);
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: FlatButton(
+                        onPressed: () => {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: HexColor.fromHex('#FBFBFB'),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              "Login",
+                              style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w500,
+                                color: HexColor.fromHex("#14B54C"),
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
