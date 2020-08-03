@@ -3,6 +3,7 @@ import '../hex/hexColor.dart';
 import '../services/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LogInEmailScreen extends StatefulWidget {
   const LogInEmailScreen({Key key}) : super(key: key);
@@ -123,6 +124,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                         elevation: _emailElevation(),
                         shadowColor: _emailShadowColor(),
                         child: TextFormField(
+                          validator: (val) => EmailValidator.validate(val)
+                              ? null
+                              : 'Please enter a valid email',
                           focusNode: _emailFocusNode,
                           decoration: new InputDecoration(
                             hintText: "Email",
@@ -147,6 +151,16 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                       elevation: _passElevation(),
                       shadowColor: _passShadowColor(),
                       child: TextFormField(
+                        validator: (val) {
+                          Pattern passPattern =
+                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                          RegExp regex = new RegExp(passPattern);
+                          if (!regex.hasMatch(val)) {
+                            return 'Password must have at least 6 characters, one letter, and one number';
+                          } else {
+                            return null;
+                          }
+                        },
                         focusNode: _passFocusNode,
                         decoration: new InputDecoration(
                           hintText: "Password",
