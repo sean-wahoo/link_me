@@ -15,6 +15,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
   FocusNode _passFocusNode;
   FocusNode _emailFocusNode;
 
+  String email;
+  String password;
+
   @override
   void dispose() {
     super.dispose();
@@ -98,12 +101,11 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(bottom: 50),
-                child: Text(
-                  "Login",
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700,
-                    color: HexColor.fromHex("FBFBFB"),
-                    fontSize: 52,
+                child: Center(
+                  child: Image.asset(
+                    'assets/linkme.png',
+                    height: 150,
+                    width: 150,
                   ),
                 ),
               ),
@@ -127,7 +129,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                       border: inputBorder,
                       focusedBorder: inputBorder,
                     ),
-                    onChanged: (val) {},
+                    onChanged: (val) {
+                      setState(() => email = val);
+                    },
                   ),
                 ),
               ),
@@ -149,7 +153,32 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                     border: inputBorder,
                     focusedBorder: inputBorder,
                   ),
-                  onChanged: (val) {},
+                  onChanged: (val) {
+                    setState(() => password = val);
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: FlatButton(
+                  onPressed: () => {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: HexColor.fromHex('#FBFBFB'),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        "Login",
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w500,
+                          color: HexColor.fromHex("#14B54C"),
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -159,35 +188,26 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Don't have an account?",
+                      "Don't have an account?  ",
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w300,
                         color: HexColor.fromHex("#FBFBFB"),
                         fontSize: 14,
                       ),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/signUpEmail');
+                    InkWell(
+                      onTap: () => {
+                        Navigator.pushReplacementNamed(context, '/signUpEmail')
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
+                      child: Text(
+                        "Register",
+                        style: GoogleFonts.nunito(
                           color: HexColor.fromHex("#FBFBFB"),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Register",
-                            style: GoogleFonts.nunito(
-                              color: HexColor.fromHex("#14B54C"),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

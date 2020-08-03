@@ -3,6 +3,7 @@ import '../hex/hexColor.dart';
 import '../services/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SignUpEmailScreen extends StatefulWidget {
   const SignUpEmailScreen({Key key}) : super(key: key);
@@ -15,6 +16,14 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
   FocusNode _passFocusNode;
   FocusNode _emailFocusNode;
   FocusNode _confirmPassFocusNode;
+
+  String email;
+  String password;
+  String confirmPassword;
+  String error = '';
+
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -49,6 +58,11 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
     final Color midGreen = HexColor.fromHex('#33DF6F');
     final Color bottomGreen = HexColor.fromHex('#47B06B');
 
+    String passVal = '';
+
+    String setPassError() =>
+        passVal = "Please enter a password at least 6 characters long";
+
     Color _emailShadowColor() {
       return _emailFocusNode.hasFocus
           ? HexColor.fromHex('#CDCDCD')
@@ -77,6 +91,12 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
 
     double _confirmPassElevation() {
       return _passFocusNode.hasFocus ? 15.0 : 0;
+    }
+
+    String setError(str) {
+      setState(() {
+        error = str;
+      });
     }
 
     return GestureDetector(
@@ -110,84 +130,193 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 50),
-                child: Text(
-                  "Sign Up",
-                  style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w700,
-                    color: HexColor.fromHex("FBFBFB"),
-                    fontSize: 52,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: 25),
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  elevation: _emailElevation(),
-                  shadowColor: _emailShadowColor(),
-                  child: TextFormField(
-                    focusNode: _emailFocusNode,
-                    decoration: new InputDecoration(
-                      hintText: "Email",
-                      hintStyle: GoogleFonts.nunito(
-                        color: HexColor.fromHex('#9D9D9D'),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 50),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/linkme.png',
+                          height: 150,
+                          width: 150,
+                        ),
                       ),
-                      fillColor: HexColor.fromHex("FBFBFB"),
-                      filled: true,
-                      border: inputBorder,
-                      focusedBorder: inputBorder,
                     ),
-                    onChanged: (val) {},
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12.5),
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  elevation: _passElevation(),
-                  shadowColor: _passShadowColor(),
-                  child: TextFormField(
-                    focusNode: _passFocusNode,
-                    decoration: new InputDecoration(
-                      hintText: "Password",
-                      hintStyle: GoogleFonts.nunito(
-                        color: HexColor.fromHex('#9D9D9D'),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 12.5),
+                      child: Material(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: _emailElevation(),
+                        shadowColor: _emailShadowColor(),
+                        child: TextFormField(
+                          validator: (val) => EmailValidator.validate(val)
+                              ? null
+                              : 'Please enter a valid email',
+                          focusNode: _emailFocusNode,
+                          decoration: new InputDecoration(
+                            hintText: "Email",
+                            hintStyle: GoogleFonts.nunito(
+                              color: HexColor.fromHex('#9D9D9D'),
+                            ),
+                            fillColor: HexColor.fromHex("FBFBFB"),
+                            filled: true,
+                            border: inputBorder,
+                            focusedBorder: inputBorder,
+                          ),
+                          onChanged: (val) {
+                            setState(() => email = val);
+                          },
+                        ),
                       ),
-                      fillColor: HexColor.fromHex("FBFBFB"),
-                      filled: true,
-                      border: inputBorder,
-                      focusedBorder: inputBorder,
                     ),
-                    onChanged: (val) {},
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.5, bottom: 12.5),
+                      child: Material(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: _passElevation(),
+                        shadowColor: _passShadowColor(),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (val) {
+                            Pattern passPattern =
+                                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                            RegExp regex = new RegExp(passPattern);
+                            if (!regex.hasMatch(val)) {
+                              return 'Password must have at least 6 characters, one letter, and one number';
+                            } else {
+                              return null;
+                            }
+                          },
+                          focusNode: _passFocusNode,
+                          decoration: new InputDecoration(
+                            hintText: "Password",
+                            hintStyle: GoogleFonts.nunito(
+                              color: HexColor.fromHex('#9D9D9D'),
+                            ),
+                            fillColor: HexColor.fromHex("FBFBFB"),
+                            filled: true,
+                            border: inputBorder,
+                            focusedBorder: inputBorder,
+                          ),
+                          onChanged: (val) {
+                            setState(() => password = val);
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.5),
+                      child: Material(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: _confirmPassElevation(),
+                        shadowColor: _confirmPassShadowColor(),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (val) => val != password
+                              ? 'Passwords dont\'t match'
+                              : null,
+                          focusNode: _confirmPassFocusNode,
+                          decoration: new InputDecoration(
+                            hintText: "Confirm Password",
+                            hintStyle: GoogleFonts.nunito(
+                              color: HexColor.fromHex('#9D9D9D'),
+                            ),
+                            errorStyle: TextStyle(fontSize: 16),
+                            fillColor: HexColor.fromHex("FBFBFB"),
+                            filled: true,
+                            border: inputBorder,
+                            focusedBorder: inputBorder,
+                          ),
+                          onChanged: (val) {
+                            setState(() => confirmPassword = val);
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 12.5),
+                      child: FlatButton(
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            dynamic result = await _auth.signUpEmail(
+                              email,
+                              password,
+                              confirmPassword,
+                            );
+                            if (result == null) {
+                              setState(
+                                  () => error = 'Please enter a valid email');
+                            }
+                            if (result == 'ERROR_EMAIL_ALREADY_IN_USE') {
+                              // return Text(
+                              //   'That email is already in use!',
+                              //   style: TextStyle(
+                              //     color: HexColor.fromHex('#F35A5A'),
+                              //   ),
+                              // );
+                              setError('That email is already in use!');
+                            }
+                            _auth.getUser.then(
+                              (user) {
+                                if (user != null) {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home');
+                                }
+                              },
+                            );
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: HexColor.fromHex('#FBFBFB'),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Text(
+                              "Sign Up",
+                              style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w500,
+                                color: HexColor.fromHex("#14B54C"),
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Material(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                elevation: _confirmPassElevation(),
-                shadowColor: _confirmPassShadowColor(),
-                child: TextFormField(
-                  focusNode: _confirmPassFocusNode,
-                  decoration: new InputDecoration(
-                    hintText: "Confirm Password",
-                    hintStyle: GoogleFonts.nunito(
-                      color: HexColor.fromHex('#9D9D9D'),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: HexColor.fromHex('#CA0E3C'),
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                      color: HexColor.fromHex('#FADCE3'),
                     ),
-                    fillColor: HexColor.fromHex("FBFBFB"),
-                    filled: true,
-                    border: inputBorder,
-                    focusedBorder: inputBorder,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(
+                        error,
+                        style: GoogleFonts.nunito(
+                          color: HexColor.fromHex('#CA0E3C'),
+                        ),
+                      ),
+                    ),
                   ),
-                  onChanged: (val) {},
                 ),
               ),
               Padding(
@@ -197,35 +326,26 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Already have an account?",
+                      "Already have an account? ",
                       style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w300,
                         color: HexColor.fromHex("#FBFBFB"),
                         fontSize: 14,
                       ),
                     ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/logInEmail');
+                    InkWell(
+                      onTap: () => {
+                        Navigator.pushReplacementNamed(context, '/logInEmail')
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
+                      child: Text(
+                        " Login",
+                        style: GoogleFonts.nunito(
                           color: HexColor.fromHex("#FBFBFB"),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Login",
-                            style: GoogleFonts.nunito(
-                              color: HexColor.fromHex("#14B54C"),
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

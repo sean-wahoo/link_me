@@ -1,25 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
+import '../models/export.dart';
 import 'dart:async';
 
 class AuthService {
+  User _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid) : null;
+  }
+
+  Stream<User> get emailUser {
+    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final Firestore _db = Firestore.instance;
 
   Future<FirebaseUser> get getUser => _auth.currentUser();
 
-  Stream<FirebaseUser> get user => _auth.onAuthStateChanged;
+  Stream<FirebaseUser> get fbUser => _auth.onAuthStateChanged;
 
   // sign in with google
 
-  Future<void> updateUserData(FirebaseUser user) {
-    DocumentReference reportRef = _db.collection('reports').document(user.uid);
+  Future<void> updateUserData(FirebaseUser fbUser) {
+    DocumentReference reportRef =
+        _db.collection('reports').document(fbUser.uid);
 
     return reportRef.setData({
-      'uid': user.uid,
+      'uid': fbUser.uid,
       'lastActivity': DateTime.now(),
     }, merge: true);
   }
@@ -38,10 +49,10 @@ class AuthService {
         accessToken: googleAuth.accessToken,
       );
       AuthResult result = await _auth.signInWithCredential(credential);
-      FirebaseUser user = result.user;
+      FirebaseUser fbUser = result.user;
 
-      updateUserData(user);
-      return user;
+      updateUserData(fbUser);
+      return fbUser;
     } catch (error) {
       print(error);
       return null;
@@ -51,6 +62,28 @@ class AuthService {
   // sign out with google
 
   // register with email/pass
+
+  Future signUpEmail(
+      String email, String password, String confirmPassword) async {
+    try {
+      if (password == confirmPassword) {
+        AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        FirebaseUser emailUser = result.user;
+        return _userFromFirebaseUser(emailUser);
+      }
+    } catch (error) {
+      print(error.toString());
+      if (error is PlatformException) {
+        if (error.code == 'ERROR_EMAIL_ALREADY_IN_USE') {
+          return "ERROR_EMAIL_ALREADY_IN_USE";
+        }
+      }
+      return null;
+    }
+  }
 
   // sign in with email/pass
 
