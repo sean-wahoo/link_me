@@ -59,8 +59,6 @@ class AuthService {
     }
   }
 
-  // sign out with google
-
   // register with email/pass
 
   Future signUpEmail(
@@ -86,6 +84,25 @@ class AuthService {
   }
 
   // sign in with email/pass
+
+  Future signInEmail(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      FirebaseUser emailUser = result.user;
+      return _userFromFirebaseUser(emailUser);
+    } catch (error) {
+      print(error.toString());
+      if (error is PlatformException) {
+        if (error.code == 'ERROR_WRONG_PASSWORD') {
+          return 'ERROR_WRONG_PASSWORD';
+        }
+      }
+      return null;
+    }
+  }
 
   // sign out with email/pass
 

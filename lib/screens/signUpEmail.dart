@@ -58,11 +58,6 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
     final Color midGreen = HexColor.fromHex('#33DF6F');
     final Color bottomGreen = HexColor.fromHex('#47B06B');
 
-    String passVal = '';
-
-    String setPassError() =>
-        passVal = "Please enter a password at least 6 characters long";
-
     Color _emailShadowColor() {
       return _emailFocusNode.hasFocus
           ? HexColor.fromHex('#CDCDCD')
@@ -93,7 +88,7 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
       return _passFocusNode.hasFocus ? 15.0 : 0;
     }
 
-    String setError(str) {
+    setError(str) {
       setState(() {
         error = str;
       });
@@ -252,8 +247,7 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                               confirmPassword,
                             );
                             if (result == null) {
-                              setState(
-                                  () => error = 'Please enter a valid email');
+                              setError('Please enter a valid email');
                             }
                             if (result == 'ERROR_EMAIL_ALREADY_IN_USE') {
                               // return Text(
@@ -297,22 +291,25 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                 ),
               ),
               Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: HexColor.fromHex('#CA0E3C'),
-                      ),
-                      borderRadius: BorderRadius.circular(18),
-                      color: HexColor.fromHex('#FADCE3'),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(
-                        error,
-                        style: GoogleFonts.nunito(
+                child: Opacity(
+                  opacity: error.length == 0 ? 0.0 : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: HexColor.fromHex('#CA0E3C'),
+                        ),
+                        borderRadius: BorderRadius.circular(18),
+                        color: HexColor.fromHex('#FADCE3'),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          error,
+                          style: GoogleFonts.nunito(
+                            color: HexColor.fromHex('#CA0E3C'),
+                          ),
                         ),
                       ),
                     ),

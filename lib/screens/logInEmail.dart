@@ -18,6 +18,9 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
 
   String email;
   String password;
+  String error = '';
+
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -38,6 +41,12 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
 
   _onFocusNodeEvent() {
     setState(() {});
+  }
+
+  setError(str) {
+    setState(() {
+      error = str;
+    });
   }
 
   @override
@@ -151,6 +160,7 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                       elevation: _passElevation(),
                       shadowColor: _passShadowColor(),
                       child: TextFormField(
+                        obscureText: true,
                         validator: (val) {
                           Pattern passPattern =
                               r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
@@ -180,7 +190,6 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 25),
                       child: FlatButton(
-                        onPressed: () => {},
                         child: Container(
                           decoration: BoxDecoration(
                             color: HexColor.fromHex('#FBFBFB'),
@@ -198,9 +207,58 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                             ),
                           ),
                         ),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            dynamic result =
+                                await _auth.signInEmail(email, password);
+
+                            if (result == null) {
+                              setError(
+                                  'Could not sign in with those credentials!');
+                            }
+
+                            if (result == "ERROR_WRONG_PASSWORD") {
+                              setError('Incorrect password!');
+                            }
+                            _auth.getUser.then(
+                              (user) {
+                                if (user != null) {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/home');
+                                }
+                              },
+                            );
+                          }
+                        },
                       ),
                     ),
                   ],
+                ),
+              ),
+              Center(
+                child: Opacity(
+                  opacity: error.length == 0 ? 0.0 : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: HexColor.fromHex('#CA0E3C'),
+                        ),
+                        borderRadius: BorderRadius.circular(18),
+                        color: HexColor.fromHex('#FADCE3'),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Text(
+                          error,
+                          style: GoogleFonts.nunito(
+                            color: HexColor.fromHex('#CA0E3C'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Padding(
