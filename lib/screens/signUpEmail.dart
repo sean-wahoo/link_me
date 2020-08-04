@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../hex/hexColor.dart';
 import '../services/export.dart';
+import '../shared/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
@@ -21,6 +22,7 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
   String password;
   String confirmPassword;
   String error = '';
+  bool loading = false;
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
@@ -92,6 +94,10 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
       setState(() {
         error = str;
       });
+    }
+
+    isLoading() {
+      return loading ? Loading() : Text('');
     }
 
     return GestureDetector(
@@ -236,11 +242,13 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                         ),
                       ),
                     ),
+                    isLoading(),
                     Padding(
                       padding: EdgeInsets.only(top: 12.5),
                       child: FlatButton(
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
                             dynamic result = await _auth.signUpEmail(
                               email,
                               password,
@@ -248,6 +256,7 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                             );
                             if (result == null) {
                               setError('Please enter a valid email');
+                              setState(() => loading = false);
                             }
                             if (result == 'ERROR_EMAIL_ALREADY_IN_USE') {
                               // return Text(
@@ -257,6 +266,7 @@ class _SignUpEmailScreenState extends State<SignUpEmailScreen> {
                               //   ),
                               // );
                               setError('That email is already in use!');
+                              setState(() => loading = false);
                             }
                             _auth.getUser.then(
                               (user) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../hex/hexColor.dart';
 import '../services/export.dart';
+import '../shared/export.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:email_validator/email_validator.dart';
@@ -19,6 +20,7 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
   String email;
   String password;
   String error = '';
+  bool loading = false;
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
@@ -77,6 +79,10 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
 
     double _passElevation() {
       return _passFocusNode.hasFocus ? 15.0 : 0;
+    }
+
+    isLoading() {
+      return loading ? Loading() : Text('');
     }
 
     return GestureDetector(
@@ -209,16 +215,19 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
                             dynamic result =
                                 await _auth.signInEmail(email, password);
 
                             if (result == null) {
                               setError(
                                   'Could not sign in with those credentials!');
+                              setState(() => loading = false);
                             }
 
                             if (result == "ERROR_WRONG_PASSWORD") {
                               setError('Incorrect password!');
+                              setState(() => loading = false);
                             }
                             _auth.getUser.then(
                               (user) {
@@ -235,6 +244,7 @@ class _LogInEmailScreenState extends State<LogInEmailScreen> {
                   ],
                 ),
               ),
+              isLoading(),
               Center(
                 child: Opacity(
                   opacity: error.length == 0 ? 0.0 : 1,
