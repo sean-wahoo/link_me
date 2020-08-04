@@ -103,7 +103,4 @@ class AuthService {
       return null;
     }
   }
-
-  // sign out with email/pass
-
 }
